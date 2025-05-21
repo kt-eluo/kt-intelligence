@@ -361,7 +361,6 @@ const ParallaxDepthSection: React.FC = () => {
       ref={ref}
       className={`relative w-full h-screen flex flex-col gap-[7.625rem] overflow-hidden bg-black py-24 px-60 z-[2]`}
     >
-      test
       <div ref={container} className="w-full flex flex-col items-start">
         <div ref={title} className="flex flex-col items-start gap-2">
           <h2 className="text-6xl font-bold mb-3 leading-[1.3] tracking-double text-white">
