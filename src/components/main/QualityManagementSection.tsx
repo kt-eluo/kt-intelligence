@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -63,23 +63,23 @@ export default function QualityManagementSection() {
     tl.fromTo(
       title.current,
       { opacity: 0, y: 100 },
-      { opacity: 1, y: 0, duration: 1, ease: "power2.inOut", stagger: 0.2 }
+      { opacity: 1, y: 0, duration: 1, ease: "power2.inOut", stagger: 0.2 },
     )
       .fromTo(
         description.current,
         { opacity: 0, y: 100 },
         { opacity: 1, y: 0, duration: 1, ease: "power2.inOut", stagger: 0.2 },
-        "-=0.8"
+        "-=0.8",
       )
       .fromTo(
         polygon.current,
         { opacity: 0, y: 100 },
-        { opacity: 1, y: 0, duration: 1, ease: "power2.inOut", stagger: 0.2 }
+        { opacity: 1, y: 0, duration: 1, ease: "power2.inOut", stagger: 0.2 },
       )
       .fromTo(
         items.current,
         { opacity: 0, y: 100 },
-        { opacity: 1, y: 0, duration: 1, ease: "power2.inOut", stagger: 0.2 }
+        { opacity: 1, y: 0, duration: 1, ease: "power2.inOut", stagger: 0.2 },
       );
   }, []);
 
@@ -107,7 +107,10 @@ export default function QualityManagementSection() {
 
       <div className="flex flex-col items-center justify-start gap-[14.75rem] px-4 pt-[10.25rem] pb-[10.25rem] h-full relative z-10">
         <div className="flex flex-col items-center gap-2 mb-12">
-          <h2 ref={title} className="text-main-88 font-bold text-center leading-line-15 tracking-double">
+          <h2
+            ref={title}
+            className="text-main-88 font-bold text-center leading-line-15 tracking-double"
+          >
             품질관리체계
           </h2>
           <p ref={description} className="text-xl leading-line-15 tracking-double text-center">
@@ -152,11 +155,18 @@ export default function QualityManagementSection() {
 
 function Card({ title, desc, padding }: { title: string; desc: string[]; padding?: string }) {
   return (
-    <div className={`min-w-[25.5rem] flex flex-col gap-3.5 bg-white rounded-xl shadow-shadow-card ${padding}`}>
-      <h3 className="font-bold text-xl leading-line-135 tracking-double mb-2 whitespace-nowrap">{title}</h3>
+    <div
+      className={`min-w-[25.5rem] flex flex-col gap-3.5 bg-white rounded-xl shadow-shadow-card ${padding}`}
+    >
+      <h3 className="font-bold text-xl leading-line-135 tracking-double mb-2 whitespace-nowrap">
+        {title}
+      </h3>
       <ul className="text-gray-600 text-base leading-line-16 tracking-double space-y-1">
         {desc.map((d, i) => (
-          <li key={i} className="flex  whitespace-pre-line before:content-['•'] before:text-[15px] before:mr-2">
+          <li
+            key={i}
+            className="flex  whitespace-pre-line before:content-['•'] before:text-[15px] before:mr-2"
+          >
             {d}
           </li>
         ))}

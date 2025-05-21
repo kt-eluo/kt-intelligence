@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState, useMemo } from "react";
 // import clsx from "clsx";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import AccordionMenu from "./ui/AccordionMenu";
 import Image from "next/image";
@@ -28,7 +28,8 @@ const ParallaxDepthSection: React.FC = () => {
     },
     {
       title: "K on STUDIO",
-      content: "다양한 타입의 비정형 문서를 AI가 이해할 수 있는\n 형태로 변환하는 데이터 처리 및 검색 기술",
+      content:
+        "다양한 타입의 비정형 문서를 AI가 이해할 수 있는\n 형태로 변환하는 데이터 처리 및 검색 기술",
     },
     {
       title: "K on Data",
@@ -54,13 +55,48 @@ const ParallaxDepthSection: React.FC = () => {
 
   const imagePaths = [
     { src: "/images/k-ai-cube01.svg", width: 1127, height: 1071, direction: "bottom-0 right-0" },
-    { src: "/images/k-ai-cube02.svg", width: 833, height: 506, direction: "bottom-[5.813rem] right-[9rem]" },
-    { src: "/images/k-ai-cube03.svg", width: 616, height: 693, direction: "bottom-[11.813rem] right-[15.75rem]" },
-    { src: "/images/k-ai-cube04.svg", width: 428, height: 389, direction: "bottom-[19rem] right-[21.688rem]" },
-    { src: "/images/k-ai-cube05.svg", width: 265, height: 225, direction: "bottom-[33.188rem] right-[31.25rem]" },
-    { src: "/images/k-ai-cube06.svg", width: 265, height: 226, direction: "bottom-[30.438rem] right-[26.813rem]" },
-    { src: "/images/k-ai-cube07.svg", width: 265, height: 226, direction: "bottom-[27.563rem] right-[22.25rem]" },
-    { src: "/images/k-ai-cube08.svg", width: 171, height: 312, direction: "bottom-[23rem] right-[3.25rem]" },
+    {
+      src: "/images/k-ai-cube02.svg",
+      width: 833,
+      height: 506,
+      direction: "bottom-[5.813rem] right-[9rem]",
+    },
+    {
+      src: "/images/k-ai-cube03.svg",
+      width: 616,
+      height: 693,
+      direction: "bottom-[11.813rem] right-[15.75rem]",
+    },
+    {
+      src: "/images/k-ai-cube04.svg",
+      width: 428,
+      height: 389,
+      direction: "bottom-[19rem] right-[21.688rem]",
+    },
+    {
+      src: "/images/k-ai-cube05.svg",
+      width: 265,
+      height: 225,
+      direction: "bottom-[33.188rem] right-[31.25rem]",
+    },
+    {
+      src: "/images/k-ai-cube06.svg",
+      width: 265,
+      height: 226,
+      direction: "bottom-[30.438rem] right-[26.813rem]",
+    },
+    {
+      src: "/images/k-ai-cube07.svg",
+      width: 265,
+      height: 226,
+      direction: "bottom-[27.563rem] right-[22.25rem]",
+    },
+    {
+      src: "/images/k-ai-cube08.svg",
+      width: 171,
+      height: 312,
+      direction: "bottom-[23rem] right-[3.25rem]",
+    },
   ];
 
   const menuPosition = useMemo(() => {
@@ -128,7 +164,7 @@ const ParallaxDepthSection: React.FC = () => {
             setActiveItem(0);
           },
         },
-      }
+      },
     )
       .fromTo(
         ".cube-object-2",
@@ -152,7 +188,7 @@ const ParallaxDepthSection: React.FC = () => {
               setActiveItem(0);
             },
           },
-        }
+        },
       )
       .fromTo(
         ".cube-object-3",
@@ -176,7 +212,7 @@ const ParallaxDepthSection: React.FC = () => {
               setActiveItem(1);
             },
           },
-        }
+        },
       )
       .fromTo(
         ".cube-object-4",
@@ -200,7 +236,7 @@ const ParallaxDepthSection: React.FC = () => {
               setActiveItem(2);
             },
           },
-        }
+        },
       )
       .fromTo(
         ".cube-object-5",
@@ -224,7 +260,7 @@ const ParallaxDepthSection: React.FC = () => {
               setActiveItem(3);
             },
           },
-        }
+        },
       )
       .fromTo(
         ".cube-object-6",
@@ -248,7 +284,7 @@ const ParallaxDepthSection: React.FC = () => {
               setActiveItem(4);
             },
           },
-        }
+        },
       )
       .fromTo(
         ".cube-object-7",
@@ -272,7 +308,7 @@ const ParallaxDepthSection: React.FC = () => {
               setActiveItem(5);
             },
           },
-        }
+        },
       )
       .fromTo(
         ".cube-object-8",
@@ -296,7 +332,7 @@ const ParallaxDepthSection: React.FC = () => {
               setActiveItem(6);
             },
           },
-        }
+        },
       );
 
     // K on RAI 컨텐츠 애니메이션
@@ -316,39 +352,48 @@ const ParallaxDepthSection: React.FC = () => {
           start: "+=12000",
           end: "+=1500",
         },
-      }
+      },
     );
   }, [setActiveItem]);
 
   return (
     <div
       ref={ref}
-      className={`relative w-full h-screen flex flex-col gap-[7.625rem] overflow-hidden bg-white py-24 px-60 z-[2]`}
+      className={`relative w-full h-screen flex flex-col gap-[7.625rem] overflow-hidden bg-black py-24 px-60 z-[2]`}
     >
       <div ref={container} className="w-full flex flex-col items-start">
         <div ref={title} className="flex flex-col items-start gap-2">
-          <h2 className="text-6xl font-bold mb-3 leading-[1.3] tracking-double">KT AI 구성요소</h2>
-          <p className="text-xl leading-[1.5] tracking-[-0.01em]">신뢰도 높은 검증 데이터에 기반한 한국형 AI</p>
+          <h2 className="text-6xl font-bold mb-3 leading-[1.3] tracking-double text-white">
+            KT intelligence 구성요소
+          </h2>
+          <p className="text-xl leading-[1.5] tracking-[-0.01em] text-white">
+            신뢰도 높은 검증 데이터에 기반한 한국형 AI
+          </p>
         </div>
-        {/* 아코디언 메뉴 */}
       </div>
       <div className="w-full max-h-[36.563rem] flex justify-between overflow-hidden">
         <div ref={accordionMenu}>
           {/* <AccordionMenu items={menuItems} /> */}
           <ul className={`flex flex-col gap-24 ${menuPosition} transition-all duration-300`}>
             {menuItems.map((item, index) => (
-              <li key={index} className={`flex flex-col gap-3 ${activeItem === index ? "active" : ""}`}>
+              <li
+                key={index}
+                className={`flex flex-col gap-3 ${activeItem === index ? "active" : ""}`}
+              >
                 <div className="flex items-center gap-3 mb-3">
                   <h3
-                    className={`text-main-32 text-[#1f1f22] font-semibold leading-[1.5] tracking-[-0.01em] transition-all duration-300 ${
-                      activeItem === index ? "text-main-50" : ""
+                    className={`text-main-72 font-semibold leading-[1.5] tracking-[-0.01em] transition-all duration-300 ${
+                      activeItem === index
+                        ? "bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent"
+                        : "text-[#1f1f22]"
                     }`}
                   >
                     {item.title}
                   </h3>
-                  <Image src="/images/icons/arrow-circle.svg" alt="cube-data" width={40} height={40} />
                 </div>
-                <p className="text-xl text-[#1f1f22] font-medium leading-[1.4] whitespace-pre-line">{item.content}</p>
+                <p className="text-xl text-white font-medium leading-[1.4] whitespace-pre-line">
+                  {item.content}
+                </p>
               </li>
             ))}
           </ul>
@@ -357,7 +402,10 @@ const ParallaxDepthSection: React.FC = () => {
       <div className="absolute top-0 left-0 w-full h-full">
         <ul className="flex flex-col items-center justify-end w-full h-full">
           {imagePaths.map((path, index) => (
-            <li key={index} className={`cube-object-${index + 1} absolute opacity-0 ${path.direction}`}>
+            <li
+              key={index}
+              className={`cube-object-${index + 1} absolute opacity-0 ${path.direction}`}
+            >
               <Image src={path.src} alt="cube-data" width={path.width} height={path.height} />
             </li>
           ))}

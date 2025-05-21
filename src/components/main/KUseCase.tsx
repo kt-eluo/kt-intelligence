@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,7 +18,9 @@ interface TagProps {
 const Tag = ({ text }: TagProps) => {
   return (
     <div className="px-3 py-1.5 bg-white/30 backdrop-blur-[20px] rounded-full">
-      <span className="text-sm font-medium leading-[1.58] tracking-[-0.01em] text-white">{text}</span>
+      <span className="text-sm font-medium leading-[1.58] tracking-[-0.01em] text-white">
+        {text}
+      </span>
     </div>
   );
 };
@@ -59,7 +61,8 @@ export default function KUseCase() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current || !titleRef.current || !descriptionRef.current || !buttonRef.current) return;
+    if (!sectionRef.current || !titleRef.current || !descriptionRef.current || !buttonRef.current)
+      return;
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -79,7 +82,7 @@ export default function KUseCase() {
           opacity: 0,
           y: 20,
         },
-        "-=0.4"
+        "-=0.4",
       )
       .from(
         buttonRef.current,
@@ -87,7 +90,7 @@ export default function KUseCase() {
           opacity: 0,
           y: 20,
         },
-        "-=0.4"
+        "-=0.4",
       )
       .from(
         cardsRef.current,
@@ -97,7 +100,7 @@ export default function KUseCase() {
           duration: 1.5,
           ease: "power2.inOut",
         },
-        "-=0.4"
+        "-=0.4",
       );
 
     return () => {
@@ -111,7 +114,8 @@ export default function KUseCase() {
       title: "자연어의 뉘앙스를 이해하는\n온누리, 민원을 해결하다",
       date: "Apr 1, 2025",
       tags: ["# 한국어 특화", "# 민원자동화"],
-      gradient: "rounded-b-2xl bg-gradient-to-b from-[rgba(36,86,191,0)] to-[#001643] bg-blend-darken !h-1/2",
+      gradient:
+        "rounded-b-2xl bg-gradient-to-b from-[rgba(36,86,191,0)] to-[#001643] bg-blend-darken !h-1/2",
     },
     {
       image: "/images/k-usecase/image_2.jpg",
@@ -126,7 +130,8 @@ export default function KUseCase() {
       title: "회의는 다온에게 맡겨! 음성 인식\n회의 요약 AI",
       date: "Mar 28, 2025",
       tags: ["# 음성인식", "# 회의자동화", "# AI요약"],
-      gradient: "rounded-2xl bg-[linear-gradient(195deg,rgba(0,0,0,0)_57.6%,rgba(0,0,0,0.20)_93.55%)] bg-blend-normal",
+      gradient:
+        "rounded-2xl bg-[linear-gradient(195deg,rgba(0,0,0,0)_57.6%,rgba(0,0,0,0.20)_93.55%)] bg-blend-normal",
     },
     {
       image: "/images/k-usecase/image_1.jpg",
@@ -145,7 +150,8 @@ export default function KUseCase() {
       title: "한국형 AI로 고객 상담을 혁신하다\n온누리 기반 스마트 자동응대",
       date: "Feb 6, 2025",
       tags: ["# AI자동응대", "# 고객상담혁신", "# 한국형AI"],
-      gradient: "rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.20)_0%,rgba(0,0,0,0.20)_100%)] bg-blend-normal",
+      gradient:
+        "rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.20)_0%,rgba(0,0,0,0.20)_100%)] bg-blend-normal",
     },
   ];
 
@@ -177,12 +183,18 @@ export default function KUseCase() {
           </div>
 
           <div className="absolute top-0 left-[15rem] z-10">
-            <h2 ref={titleRef} className="text-main-90 font-bold leading-line-088 tracking-default mb-10">
+            <h2
+              ref={titleRef}
+              className="text-main-90 font-bold leading-line-088 tracking-default mb-10"
+            >
               Use
               <br />
               case
             </h2>
-            <p ref={descriptionRef} className="text-main-26 font-medium leading-line-16 tracking-double mb-[3.75rem]">
+            <p
+              ref={descriptionRef}
+              className="text-main-26 font-medium leading-line-16 tracking-double mb-[3.75rem]"
+            >
               특화된 AI 모델이 문제에 도전하고
               <br />
               해결한 과정을 경험해 보세요

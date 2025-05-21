@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SVGFill from "./ui/SVGFill";
+import SVGFill from "@/components/ui/SVGFill";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,15 +19,28 @@ const HeroSection: React.FC = () => {
   useEffect(() => {
     const tl = gsap.timeline();
     tl.from(logo.current, { opacity: 0, y: 30, duration: 1, ease: "power2.out" })
-      .from(title1CurrentRef.current, { opacity: 0, y: 30, duration: 1, ease: "power2.out" }, "-=0.8")
-      .from(title2CurrentRef.current, { opacity: 0, y: 30, duration: 1, ease: "power2.out" }, "-=0.8")
+      .from(
+        title1CurrentRef.current,
+        { opacity: 0, y: 30, duration: 1, ease: "power2.out" },
+        "-=0.8",
+      )
+      .from(
+        title2CurrentRef.current,
+        { opacity: 0, y: 30, duration: 1, ease: "power2.out" },
+        "-=0.8",
+      )
       .from(button.current, { opacity: 0, y: 30, duration: 1, ease: "power2.out" }, "-=0.8");
   }, []);
 
   useEffect(() => {
     // 롤링 애니메이션
     const rollingInterval = setInterval(() => {
-      if (title1CurrentRef.current && title1NextRef.current && title2CurrentRef.current && title2NextRef.current) {
+      if (
+        title1CurrentRef.current &&
+        title1NextRef.current &&
+        title2CurrentRef.current &&
+        title2NextRef.current
+      ) {
         // 첫 번째 텍스트 롤링
         title1CurrentRef.current.style.animation = "rollingCurrent 0.5s ease-in-out forwards";
         title1NextRef.current.style.animation = "rollingNext 0.5s ease-in-out forwards";
@@ -127,7 +140,13 @@ const HeroSection: React.FC = () => {
       {/* Content */}
       <div className="relative z-20 flex flex-col items-center justify-center w-full h-full">
         <div ref={logo} className="flex items-center justify-center mb-[4.25rem]">
-          <Image src="/images/main_logo.png" alt="logo" width={138} height={140} />
+          <Image
+            src="/images/main_logo.png"
+            alt="logo"
+            width={138}
+            height={140}
+            className="w-[8.625rem] h-[8.75rem]"
+          />
         </div>
         {/* 타이틀 애니메이션 루프 */}
         <div className="w-full">

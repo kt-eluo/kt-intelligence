@@ -4,7 +4,9 @@ const config: Config = {
   theme: {
     extend: {
       fontSize: {
+        "main-170": "10.625rem",
         "main-168": "10.5rem",
+        "main-134": "8.375rem",
         "main-100": "6.25rem",
         "main-98": "6.125rem",
         "main-90": "5.625rem",
@@ -19,6 +21,7 @@ const config: Config = {
         "main-40": "2.5rem",
         "main-36": "2.25rem",
         "main-32": "2rem",
+        "main-30": "1.875rem",
         "main-28": "1.75rem",
         "main-26": "1.625rem",
         "main-24": "1.5rem",
@@ -31,11 +34,13 @@ const config: Config = {
       },
       lineHeight: {
         "line-088": "0.88",
+        "line-10": "1",
         "line-12": "1.2",
         "line-13": "1.3",
         "line-135": "1.35",
         "line-142": "1.42",
         "line-15": "1.5",
+        "line-152": "1.52",
         "line-16": "1.6",
         "line-164": "1.64",
         "line-172": "1.72",
@@ -51,6 +56,8 @@ const config: Config = {
       },
       boxShadow: {
         "shadow-card": "2px 6px 12px 0px rgba(0, 0, 0, 0.05)",
+        dropdown: "0px 8px 6px 0px rgba(0, 0, 0, 0.08)",
+        language: "0px 4px 6px 0px rgba(0, 0, 0, 0.08)",
       },
       background: {
         "main-bg": "linear-gradient(204deg, #FAFAFA 47.92%, #FFF 82.66%)",

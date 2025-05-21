@@ -4,5 +4,5 @@
     "strings": true
   },
   "editor.inlineSuggest.enabled": true,
-  "tailwindCSS.experimental.configFile": "./src/app/globals.css"
+  "tailwindCSS.experimental.configFile": "./src/pages/globals.css"
 }
