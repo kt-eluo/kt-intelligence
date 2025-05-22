@@ -23,12 +23,40 @@ const rightLinks = [
   { label: "Inside KT", href: "#", icon: "/images/icons/arrow-up-right-black.svg" },
 ];
 
-const Header: React.FC = () => {
+type HeaderProps = {
+  parallaxRef?: React.RefObject<HTMLDivElement | null>;
+};
+
+const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [language, setLanguage] = useState("KR");
   const languageRef = useRef<HTMLDivElement>(null);
+  const [isOnParallax, setIsOnParallax] = useState(false);
+
+  useEffect(() => {
+    console.log(parallaxRef);
+    if (!parallaxRef || !parallaxRef.current) return;
+    const handleScroll = () => {
+      const rect = parallaxRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setIsOnParallax(rect.top <= 80 && rect.bottom > 80); // 80: header height
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [parallaxRef]);
+
+  const textColor = isOnParallax ? "text-white" : "text-black";
+  const navText = isOnParallax ? "text-white" : "text-black";
+  const iconDropdown = isOnParallax
+    ? "/images/icons/dropdown_white.svg"
+    : "/images/icons/dropdown.svg";
+  const iconSrc = isOnParallax
+    ? "/images/icons/arrow-up-right-white.svg"
+    : "/images/icons/arrow-up-right-black.svg";
+  const iconGlobe = isOnParallax ? "/images/icons/globe_white.svg" : "/images/icons/globe.svg";
 
   const handleMouseEnter = (label: string) => setOpenDropdown(label);
   const handleMouseLeave = () => setOpenDropdown(null);
@@ -54,7 +82,9 @@ const Header: React.FC = () => {
   }, [languageOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full flex items-center justify-center gap-20 px-4 md:px-8 md:py-5 z-50">
+    <header
+      className={`fixed top-0 left-0 right-0 w-full flex items-center justify-center gap-20 px-4 md:px-8 md:py-5 z-50 transition-colors duration-300`}
+    >
       <div className="max-w-[86.5rem] w-full flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center mr-[4.375rem]">
@@ -67,12 +97,12 @@ const Header: React.FC = () => {
           />
         </div>
         {/* Center: Navigation (Desktop) */}
-        <nav className="hidden lg:flex items-center gap-10 pt-2">
+        <nav className={`hidden lg:flex items-center gap-10 pt-2 ${navText}`}>
           {navItems.map((item) => (
             <div key={item.label} className="relative" onClick={() => handleClick(item)}>
               <a
                 href={item.href}
-                className="flex items-center gap-1 text-base font-bold leading-line-15 hover:text-[#FF0000] transition"
+                className={`flex items-center gap-1 text-base font-bold leading-line-15 hover:text-[#FF0000] transition ${navText}`}
                 aria-haspopup={!!item.children}
                 aria-expanded={openDropdown === item.label}
                 tabIndex={0}
@@ -80,7 +110,7 @@ const Header: React.FC = () => {
                 {item.label}
                 {item.children && (
                   <Image
-                    src="/images/icons/dropdown.svg"
+                    src={iconDropdown}
                     alt="dropdown"
                     width={8}
                     height={8}
@@ -124,21 +154,17 @@ const Header: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="flex items-start gap-1 text-base font-medium leading-line-15 tracking-default hover:text-[#FF0000] transition"
+                className={`flex items-start gap-1 text-base font-medium leading-line-15 tracking-default hover:text-[#FF0000] transition ${textColor}`}
               >
                 {item.label}
-                <Image
-                  src={item.icon}
-                  alt=""
-                  width={16}
-                  height={28}
-                  className="-mt-[2px] w-4 h-7"
-                />
+                <Image src={iconSrc} alt="" width={16} height={28} className="-mt-[2px] w-4 h-7" />
               </a>
             ))}
           </div>
           {/* Login */}
-          <button className="bg-black rounded-md px-6 py-[0.563rem] text-white text-base font-bold leading-line-172 ml-2">
+          <button
+            className={`rounded-md px-6 py-[0.563rem] text-base font-bold leading-line-172 ml-2 ${isOnParallax ? "text-black bg-white" : "text-white bg-black"}`}
+          >
             K on Model 체험하기
           </button>
 
@@ -153,17 +179,13 @@ const Header: React.FC = () => {
               tabIndex={0}
               type="button"
             >
-              <Image
-                src="/images/icons/globe.svg"
-                alt="globe"
-                width={28}
-                height={28}
-                className="w-7 h-7"
-              />
-              <div className="flex items-center gap-1 text-base font-bold leading-line-172">
+              <Image src={iconGlobe} alt="globe" width={28} height={28} className="w-7 h-7" />
+              <div
+                className={`flex items-center gap-1 text-base font-bold leading-line-172 ${isOnParallax ? "text-white" : "text-black"}`}
+              >
                 {language}
                 <Image
-                  src="/images/icons/dropdown.svg"
+                  src={iconDropdown}
                   alt="dropdown"
                   width={8}
                   height={8}

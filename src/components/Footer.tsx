@@ -15,7 +15,7 @@ const snsLinks = [
 
 const Footer = () => (
   <footer className="w-full bg-[#181818] text-white font-sans">
-    <div className="max-w-[86.5rem] w-full mx-auto pt-12 pb-6 flex flex-col md:flex-row justify-between items-start gap-8 border-b border-[#333333]">
+    <div className="max-w-[86.5rem] w-full mx-auto pt-[3.75rem] pb-6 flex flex-col md:flex-row justify-between items-start gap-8 border-b border-[#333333]">
       {/* Left: Logo & Info */}
       <div className="flex flex-col gap-2 min-w-[320px]">
         <div className="text-sm font-bold leading-line-152 text-[#C5C5C5]">
@@ -45,7 +45,7 @@ const Footer = () => (
     </div>
 
     {/* Bottom: Links & SNS */}
-    <div className="max-w-[86.5rem] w-full mx-auto py-4 flex flex-col md:flex-row justify-between items-center">
+    <div className="max-w-[86.5rem] w-full mx-auto pt-4 pb-[3.75rem] flex flex-col md:flex-row justify-between items-center">
       <div className="flex flex-wrap gap-6 text-base font-bold leading-line-152">
         {externalLinks.map((item, index) => (
           <>
