@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useMemo, forwardRef, useLayoutEffect } from "react";
+import React, { useRef, useState, forwardRef, useLayoutEffect, useEffect } from "react";
 // import clsx from "clsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -19,13 +19,16 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
   const cubeTitle = useRef<HTMLHeadingElement>(null);
   const cubeDescription = useRef<HTMLParagraphElement>(null);
   const [activeItem, setActiveItem] = useState<number>(0);
+  const activeItemRef = useRef(activeItem);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [isCubeAnimationDone, setIsCubeAnimationDone] = useState(false);
 
   const menuItems = [
     {
-      title: "K on SPC",
+      title: "K on Cloud",
       content: "AI 특화 고객 맞춤형\n보안 강화 클라우드 플랫폼",
       description:
-        "한국에 위치한 데이터 센터를 통해 데이터 주권 보호,\n고객 소유 전용키로 데이터 이중 보호, 국내 법률/규제 준수",
+        "한국에 위치한 데이터 센터를 통해 데이터 주권 보호,\n고객 소유 전용키로 데이터 이중 보호, 국내 법률/규제\n준수",
     },
     {
       title: "K on Studio",
@@ -59,11 +62,11 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
   const imagePaths = [
     {
       src: "/images/k-cube/k-spc.svg",
-      activeSrc: "/images/k-cube/k-spc.svg",
-      width: 778,
-      height: 467,
+      activeSrc: "/images/k-cube/k-spc-act.svg",
+      width: 755,
+      height: 444,
       direction: "right-1/2 translate-y-[21.75rem] translate-x-[50.9%]",
-      size: "w-[48.625rem] h-[29.188rem]",
+      size: "w-[47.188rem] h-[27.75rem]",
     },
     {
       src: "/images/k-cube/k-studio.svg",
@@ -103,28 +106,82 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
       width: 755,
       height: 550,
       direction: "right-1/2 z-[-1]",
-      size: "w-[47.388rem] h-[34.375rem]",
+      size: "w-[44.8rem] h-[34.375rem]",
     },
     {
       src: "/images/k-cube/k-suite.svg",
       activeSrc: "/images/k-cube/k-suite.svg",
       width: 930,
-      height: 947,
+      height: 905,
       direction: "z-[-2]",
-      size: "w-[58.125rem] h-[59.188rem]",
+      size: "w-[58.125rem] h-[56.563rem]",
     },
   ];
 
-  // Scroll to top on mount (page refresh)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.scrollTo(0, 0);
-    }
+    activeItemRef.current = activeItem;
+  }, [activeItem]);
+
+  const handleCube = () => {
+    setActiveItem((prev) => (prev === 5 ? 0 : prev + 1));
+  };
+
+  const startCubeInterval = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      handleCube();
+    }, 4000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, []);
 
-  useLayoutEffect(() => {
-    if (typeof window === "undefined") return;
+  useEffect(() => {
+    // 0~5까지만 동작
+    if (activeItem < 0 || activeItem > 5) return;
 
+    // 이전 큐브 이미지를 원래대로 되돌림
+    const prevIndex = activeItem === 0 ? 5 : activeItem - 1;
+    const prevCubeImage = document.querySelector(`.cube-object-${prevIndex + 1} img`);
+    if (prevCubeImage) {
+      (prevCubeImage as HTMLImageElement).src = imagePaths[prevIndex].src;
+    }
+
+    // 현재 큐브 이미지를 활성화 이미지로 변경
+    const currentCubeImage = document.querySelector(`.cube-object-${activeItem + 1} img`);
+    if (currentCubeImage) {
+      (currentCubeImage as HTMLImageElement).src = imagePaths[activeItem].activeSrc;
+    }
+  }, [activeItem]);
+
+  const resetAllCubeImages = () => {
+    for (let i = 0; i < 6; i++) {
+      const img = document.querySelector(`.cube-object-${i + 1} img`) as HTMLImageElement | null;
+      if (img) img.src = imagePaths[i].src;
+    }
+  };
+
+  const handleCubeMouseEnter = (index: number) => {
+    if (!isCubeAnimationDone) return;
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setActiveItem(index);
+    // 해당 큐브만 활성화 이미지로
+    for (let i = 0; i < 6; i++) {
+      const img = document.querySelector(`.cube-object-${i + 1} img`) as HTMLImageElement | null;
+      if (img) img.src = i === index ? imagePaths[i].activeSrc : imagePaths[i].src;
+    }
+  };
+
+  const handleCubeMouseLeave = () => {
+    if (!isCubeAnimationDone) return;
+    resetAllCubeImages();
+    startCubeInterval();
+  };
+
+  useLayoutEffect(() => {
     ScrollTrigger.create({
       trigger: ref.current,
       start: "top top",
@@ -213,11 +270,11 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
       },
     });
     // 큐브 컨텐츠 애니메이션
-    gsap.set(".cube-object-2", { yPercent: -150, xPercent: 50 });
-    gsap.set(".cube-object-3", { yPercent: -150, xPercent: 22 });
-    gsap.set(".cube-object-4", { yPercent: -150, xPercent: 50 });
-    gsap.set(".cube-object-5", { yPercent: -150, xPercent: 78 });
-    gsap.set(".cube-object-6", { yPercent: 200, xPercent: 50 });
+    gsap.set(".cube-object-2", { yPercent: -200, xPercent: 50 });
+    gsap.set(".cube-object-3", { yPercent: -200, xPercent: 22 });
+    gsap.set(".cube-object-4", { yPercent: -200, xPercent: 50 });
+    gsap.set(".cube-object-5", { yPercent: -200, xPercent: 78 });
+    gsap.set(".cube-object-6", { yPercent: 250, xPercent: 50 });
     gsap.set(".cube-object-7", { opacity: 0 });
     gsap.set(cubeTitle.current, { opacity: 0 });
     gsap.set(cubeDescription.current, { opacity: 0 });
@@ -266,10 +323,21 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
         ".cube-object-6",
         {
           opacity: 1,
-          yPercent: 69,
+          yPercent: 66,
           xPercent: 50,
           duration: 0.3,
           ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+          onComplete: () => {
+            handleCube();
+            startCubeInterval();
+            setIsCubeAnimationDone(true);
+          },
+          onReverseComplete: () => {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            setActiveItem(0);
+            resetAllCubeImages();
+            setIsCubeAnimationDone(false);
+          },
         },
         "-=0.2",
       );
@@ -280,6 +348,18 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
         right: "50%",
         duration: 0.5,
         ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+        onComplete: () => {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          setActiveItem(7);
+          resetAllCubeImages();
+          setIsCubeAnimationDone(false);
+        },
+        onReverseComplete: () => {
+          console.log("onReverseComplete");
+          setActiveItem(0);
+          startCubeInterval();
+          setIsCubeAnimationDone(true);
+        },
       })
       .to(
         contentMenu.current,
@@ -307,7 +387,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
       });
 
     // Refresh ScrollTrigger after setup
-    ScrollTrigger.refresh();
+    // ScrollTrigger.refresh();
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -342,7 +422,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
               K on
             </h3>
             <p className="text-main-34 font-bold leading-line-152 text-white">
-              ‘온(온)’은 순우리말로 ‘모든 것’을 의미합니다.
+              '온(온)'은 순우리말로 '모든 것'을 의미합니다.
               <br />
               일상과 업무, 사람과 기술, 감정과 언어까지
               <br />K on은 우리 삶의 모든 순간을 이해하고 연결합니다.
@@ -359,17 +439,18 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
                   key={index}
                   className={`absolute top-0 left-0 flex flex-col gap-3 ${activeItem === index ? "opacity-100" : "opacity-0"} transition-all duration-800`}
                 >
+                  {`${activeItem} ${index}`}
                   <div className="flex flex-col gap-7 mb-6">
                     <h3
                       className={`text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300`}
                     >
                       {item.title}
                     </h3>
-                    <p className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre-line">
+                    <p className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre">
                       {item.content}
                     </p>
                   </div>
-                  <p className="text-main-22 font-extrabold text-[#555555] leading-line-152 whitespace-pre-line mb-[3.25rem]">
+                  <p className="text-main-22 font-extrabold text-[#555555] leading-line-152 whitespace-pre mb-[3.25rem]">
                     {item.description}
                   </p>
                   <button className="w-fit py-2.5 px-6 border border-white rounded-md text-base font-bold text-white leading-line-172">
@@ -382,7 +463,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
         </div>
         <div
           ref={cubeContainer}
-          className="absolute top-[50%] right-[10.75rem] -translate-y-1/2 w-[58.125rem] h-[59.188rem] overflow-hidden"
+          className="absolute top-[50%] right-[10.75rem] -translate-y-1/2 min-w-[58.125rem] h-[56.563rem]"
         >
           <h3
             ref={cubeTitle}
@@ -390,11 +471,13 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
           >
             K on Suite
           </h3>
-          <ul className="flex flex-col items-center justify-end w-full h-full">
-            {imagePaths.map((path, index) => (
+          <ul className="relative z-[-1] flex flex-col items-center justify-end w-full h-full scale-80 -mt-[20%]">
+            {imagePaths.slice(0, 6).map((path, index) => (
               <li
                 key={index}
                 className={`cube-object cube-object-${index + 1} absolute top-0 ${path.direction} ${path.size} ease-[cubic-bezier(.215,.61,.355,1)]`}
+                onMouseEnter={() => handleCubeMouseEnter(index)}
+                onMouseLeave={handleCubeMouseLeave}
               >
                 <Image
                   src={path.src}
@@ -405,10 +488,19 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
                 />
               </li>
             ))}
+            <li className="cube-object cube-object-7 absolute top-0 w-[58.125rem] h-[56.563rem] z-[-2]">
+              <Image
+                src="/images/k-cube/k-suite.svg"
+                alt="cube-data"
+                width={930}
+                height={905}
+                className="w-full h-full"
+              />
+            </li>
           </ul>
           <p
             ref={cubeDescription}
-            className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre text-center -mt-64"
+            className="text-main-40 font-bold text-white leading-[1.44] text-center whitespace-pre"
           >
             Cloud, Model, RAG, Agent, Studio, RAI까지
             <br />

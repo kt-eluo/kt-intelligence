@@ -42,12 +42,6 @@ const ParallaxSection: React.FC = () => {
       height: 174,
       direction: "w-[9.875rem] h-[10.875rem] bottom-[16.063rem] left-[10rem] ",
     },
-    // {
-    //   src: "/images/k-value5.png",
-    //   width: 131,
-    //   height: 209,
-    //   direction: "w-[8.188rem] h-[13.063rem] bottom-[3.25rem] left-[31.188rem] ",
-    // },
     {
       src: "/images/k-value6.png",
       width: 198,
@@ -66,18 +60,6 @@ const ParallaxSection: React.FC = () => {
       height: 362,
       direction: "w-[18.125rem] h-[22.625rem] top-[37.438rem] right-[-7.938rem] ",
     },
-    // {
-    //   src: "/images/k-value9.png",
-    //   width: 181,
-    //   height: 237,
-    //   direction: "w-[11.313rem] h-[14.813rem] bottom-[2.138rem] right-[26.388rem] z-[-1]",
-    // },
-    // {
-    //   src: "/images/k-value10.png",
-    //   width: 151,
-    //   height: 202,
-    //   direction: "w-[9.438rem] h-[12.625rem] top-[5.063rem] right-[30.75rem] ",
-    // },
   ];
 
   useEffect(() => {
@@ -101,10 +83,10 @@ const ParallaxSection: React.FC = () => {
       {
         opacity: 1,
         y: 0,
-        duration: 1.2,
-        ease: "power3.inOut",
+        duration: 0.8,
+        ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
       },
-      "-=0.6",
+      "-=0.4",
     )
       .fromTo(
         subtitle2.current,
@@ -112,10 +94,10 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-        "-=0.6",
+        "-=0.4",
       )
       .fromTo(
         subtitle1.current,
@@ -123,10 +105,10 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-        "-=0.6",
+        "-=0.4",
       )
       .fromTo(
         ".image-obj-1",
@@ -134,8 +116,8 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
         "<",
       )
@@ -145,8 +127,8 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
         "<",
       )
@@ -156,10 +138,10 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-        "-=0.6",
+        "-=0.4",
       )
       .fromTo(
         ".image-obj-3",
@@ -167,10 +149,10 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-        "-=0.6",
+        "-=0.4",
       )
       .fromTo(
         ".image-obj-6",
@@ -178,21 +160,10 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
         "<",
-      )
-      .fromTo(
-        ".image-obj-7",
-        { opacity: 0, y: 100 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
-        },
-        "-=0.6",
       )
       .fromTo(
         ".image-obj-4",
@@ -200,10 +171,10 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-        "-=0.6",
+        "-=0.4",
       )
       .fromTo(
         description.current,
@@ -211,19 +182,8 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
-        },
-        "<",
-      )
-      .fromTo(
-        ".image-obj-9",
-        { opacity: 0, y: -100 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
         "<",
       )
@@ -233,21 +193,10 @@ const ParallaxSection: React.FC = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
+          duration: 0.8,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-        "-=0.6",
-      )
-      .fromTo(
-        ".image-obj-8",
-        { opacity: 0, y: 100 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power3.inOut",
-        },
-        "<",
+        "-=0.4",
       );
   }, []);
 

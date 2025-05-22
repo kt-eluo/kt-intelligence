@@ -48,9 +48,8 @@ const Footer = () => (
     <div className="max-w-[86.5rem] w-full mx-auto pt-4 pb-[3.75rem] flex flex-col md:flex-row justify-between items-center">
       <div className="flex flex-wrap gap-6 text-base font-bold leading-line-152">
         {externalLinks.map((item, index) => (
-          <>
+          <div key={index}>
             <a
-              key={item.label}
               href={item.url}
               className="flex items-center gap-1"
               target="_blank"
@@ -68,13 +67,13 @@ const Footer = () => (
               />
             </a>
             {externalLinks.length - 1 !== index && <span className="text-[#333333]">|</span>}
-          </>
+          </div>
         ))}
       </div>
       <div className="flex gap-4 mt-4 md:mt-0">
-        {snsLinks.map((sns) => (
+        {snsLinks.map((sns, index) => (
           <a
-            key={sns.label}
+            key={index}
             href={sns.url}
             target="_blank"
             rel="noopener noreferrer"
