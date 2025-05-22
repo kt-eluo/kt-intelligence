@@ -500,7 +500,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
           </ul>
           <p
             ref={cubeDescription}
-            className="text-main-40 font-bold text-white leading-[1.44] text-center whitespace-pre"
+            className="text-main-40 font-bold text-white leading-[1.44] text-center whitespace-pre mt-[8%]"
           >
             Cloud, Model, RAG, Agent, Studio, RAI까지
             <br />
