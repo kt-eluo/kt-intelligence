@@ -22,6 +22,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
   const activeItemRef = useRef(activeItem);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isCubeAnimationDone, setIsCubeAnimationDone] = useState(false);
+  const [isScrollTop, setIsScrollTop] = useState(false);
 
   const menuItems = [
     {
@@ -181,7 +182,13 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
     startCubeInterval();
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setTimeout(() => setIsScrollTop(true), 0);
+  }, []);
+
   useLayoutEffect(() => {
+    if (!isScrollTop) return;
     ScrollTrigger.create({
       trigger: ref.current,
       start: "top top",
@@ -386,13 +393,14 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
         ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
       });
 
-    // Refresh ScrollTrigger after setup
-    // ScrollTrigger.refresh();
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 0);
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, [setActiveItem, ref]);
+  }, [isScrollTop]);
 
   return (
     <section className="w-full h-full bg-black">
@@ -500,7 +508,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
           </ul>
           <p
             ref={cubeDescription}
-            className="text-main-40 font-bold text-white leading-[1.44] text-center whitespace-pre mt-[8%]"
+            className="text-main-40 font-bold text-white leading-[1.44] text-center whitespace-pre -mt-[8%]"
           >
             Cloud, Model, RAG, Agent, Studio, RAI까지
             <br />
