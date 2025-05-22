@@ -23,40 +23,35 @@ const rightLinks = [
   { label: "Inside KT", href: "#", icon: "/images/icons/arrow-up-right-black.svg" },
 ];
 
-type HeaderProps = {
-  parallaxRef?: React.RefObject<HTMLDivElement | null>;
-};
-
-const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Header: React.FC = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [language, setLanguage] = useState("KR");
   const languageRef = useRef<HTMLDivElement>(null);
-  const [isOnParallax, setIsOnParallax] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    console.log(parallaxRef);
-    if (!parallaxRef || !parallaxRef.current) return;
     const handleScroll = () => {
-      const rect = parallaxRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setIsOnParallax(rect.top <= 80 && rect.bottom > 80); // 80: header height
+      setIsScrolled(window.scrollY > 0);
+      const currentY = window.scrollY;
+      if (currentY === 0) {
+        setShowHeader(true);
+        return;
+      }
+      if (currentY > lastScrollY.current && currentY > 80) {
+        // down
+        setShowHeader(false);
+      } else {
+        // up
+        setShowHeader(true);
+      }
+      lastScrollY.current = currentY;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [parallaxRef]);
-
-  const textColor = isOnParallax ? "text-white" : "text-black";
-  const navText = isOnParallax ? "text-white" : "text-black";
-  const iconDropdown = isOnParallax
-    ? "/images/icons/dropdown_white.svg"
-    : "/images/icons/dropdown.svg";
-  const iconSrc = isOnParallax
-    ? "/images/icons/arrow-up-right-white.svg"
-    : "/images/icons/arrow-up-right-black.svg";
-  const iconGlobe = isOnParallax ? "/images/icons/globe_white.svg" : "/images/icons/globe.svg";
+  }, []);
 
   const handleMouseEnter = (label: string) => setOpenDropdown(label);
   const handleMouseLeave = () => setOpenDropdown(null);
@@ -83,7 +78,10 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 w-full flex items-center justify-center gap-20 px-4 md:px-8 md:py-5 z-50 transition-colors duration-300`}
+      className={`fixed top-0 left-0 right-0 w-full flex items-center justify-center gap-20 px-4 md:px-8 md:py-5 z-50 transition-all duration-300 ${
+        showHeader ? "translate-y-0" : "-translate-y-full"
+      } ${isScrolled ? "bg-white/80 backdrop-blur" : "bg-transparent"}
+`}
     >
       <div className="max-w-[86.5rem] w-full flex items-center justify-between">
         {/* Left: Logo */}
@@ -97,12 +95,12 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
           />
         </div>
         {/* Center: Navigation (Desktop) */}
-        <nav className={`hidden lg:flex items-center gap-10 pt-2 ${navText}`}>
+        <nav className={`hidden lg:flex items-center gap-10 pt-2`}>
           {navItems.map((item) => (
             <div key={item.label} className="relative" onClick={() => handleClick(item)}>
               <a
                 href={item.href}
-                className={`flex items-center gap-1 text-base font-bold leading-line-15 hover:text-[#FF0000] transition ${navText}`}
+                className={`flex items-center gap-1 text-base font-bold leading-line-15 hover:text-[#FF0000] transition`}
                 aria-haspopup={!!item.children}
                 aria-expanded={openDropdown === item.label}
                 tabIndex={0}
@@ -110,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
                 {item.label}
                 {item.children && (
                   <Image
-                    src={iconDropdown}
+                    src="/images/icons/dropdown.svg"
                     alt="dropdown"
                     width={8}
                     height={8}
@@ -154,16 +152,22 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
               <a
                 key={item.label}
                 href={item.href}
-                className={`flex items-start gap-1 text-base font-medium leading-line-15 tracking-default hover:text-[#FF0000] transition ${textColor}`}
+                className={`flex items-start gap-1 text-base font-medium leading-line-15 tracking-default hover:text-[#FF0000] transition`}
               >
                 {item.label}
-                <Image src={iconSrc} alt="" width={16} height={28} className="-mt-[2px] w-4 h-7" />
+                <Image
+                  src="/images/icons/arrow-up-right-black.svg"
+                  alt=""
+                  width={16}
+                  height={28}
+                  className="-mt-[2px] w-4 h-7"
+                />
               </a>
             ))}
           </div>
           {/* Login */}
           <button
-            className={`rounded-md px-6 py-[0.563rem] text-base font-bold leading-line-172 ml-2 ${isOnParallax ? "text-black bg-white" : "text-white bg-black"}`}
+            className={`bg-black text-white rounded-md px-6 py-[0.563rem] text-base font-bold leading-line-172 ml-2`}
           >
             K on Model 체험하기
           </button>
@@ -179,13 +183,17 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
               tabIndex={0}
               type="button"
             >
-              <Image src={iconGlobe} alt="globe" width={28} height={28} className="w-7 h-7" />
-              <div
-                className={`flex items-center gap-1 text-base font-bold leading-line-172 ${isOnParallax ? "text-white" : "text-black"}`}
-              >
+              <Image
+                src="/images/icons/globe.svg"
+                alt="globe"
+                width={28}
+                height={28}
+                className="w-7 h-7"
+              />
+              <div className={`flex items-center gap-1 text-base font-bold leading-line-172`}>
                 {language}
                 <Image
-                  src={iconDropdown}
+                  src="/images/icons/dropdown.svg"
                   alt="dropdown"
                   width={8}
                   height={8}
@@ -234,12 +242,12 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
           </div>
         </div>
         {/* Mobile Hamburger */}
-        <button
+        {/* <button
           className="lg:hidden flex items-center justify-center w-10 h-10"
           onClick={() => setMobileMenuOpen((v) => !v)}
           aria-label="모바일 메뉴 열기"
         >
-          {/* 햄버거 아이콘 (SVG) */}
+          햄버거 아이콘 (SVG)
           <svg
             width="24"
             height="24"
@@ -250,9 +258,9 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
           >
             <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
           </svg>
-        </button>
+        </button> */}
         {/* Mobile Menu Drawer */}
-        {mobileMenuOpen && (
+        {/* {mobileMenuOpen && (
           <div className="fixed inset-0 z-50 bg-black/40 flex flex-col">
             <div className="bg-white shadow w-full p-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
@@ -307,7 +315,7 @@ const Header: React.FC<HeaderProps> = ({ parallaxRef }) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </header>
   );

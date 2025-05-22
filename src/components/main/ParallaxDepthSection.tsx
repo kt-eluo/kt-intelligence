@@ -350,114 +350,114 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
   }, [setActiveItem]);
 
   return (
-    <div
-      ref={ref}
-      className={`relative w-full h-screen flex flex-col gap-[7.625rem] overflow-hidden bg-black py-24 px-60 z-[2]`}
-    >
-      <div ref={container} className="w-full flex flex-col items-center gap-[16.813rem]">
-        <div ref={title} className="flex flex-col items-center gap-6">
-          <h2 className="text-main-72 font-bold leading-line-14 tracking-triple text-white">
-            구성요소
-          </h2>
-          <p className="text-main-40 font-semibold leading-line-152 tracking-triple text-[#E0E0E0]">
-            신뢰도 높은 검증 데이터에 기반한 한국형 AI
-          </p>
+    <section className="w-full h-full bg-black">
+      <div
+        ref={ref}
+        className={`relative max-w-[1920px] mx-auto w-full h-screen flex flex-col gap-[7.625rem] overflow-hidden bg-black py-24 px-60 z-[2]`}
+      >
+        <div ref={container} className="w-full h-full flex flex-col items-center gap-[30%]">
+          <div ref={title} className="flex flex-col items-center gap-6">
+            <h2 className="text-main-72 font-bold leading-line-14 tracking-triple text-white">
+              구성요소
+            </h2>
+            <p className="text-main-40 font-semibold leading-line-152 tracking-triple text-[#E0E0E0]">
+              신뢰도 높은 검증 데이터에 기반한 한국형 AI
+            </p>
+          </div>
+          <div ref={kOn} className="flex flex-col items-center gap-7 text-center">
+            <h3
+              className={`text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300`}
+            >
+              K on
+            </h3>
+            <p className="text-main-34 font-bold leading-line-152 text-white">
+              ‘온(온)’은 순우리말로 ‘모든 것’을 의미합니다.
+              <br />
+              일상과 업무, 사람과 기술, 감정과 언어까지
+              <br />K on은 우리 삶의 모든 순간을 이해하고 연결합니다.
+            </p>
+          </div>
         </div>
-        <div ref={kOn} className="flex flex-col items-center gap-7 text-center">
+        {/* left 메뉴 컨텐츠 */}
+        <div className="absolute top-[50%] left-[16.55rem] -translate-y-1/2 w-full flex justify-between">
+          <div ref={contentMenu} className="min-w-[28.063rem] min-h-[31.875rem]">
+            {/* <AccordionMenu items={menuItems} /> */}
+            <ul className={`relative flex flex-col gap-24 w-full h-full`}>
+              {menuItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={`absolute top-0 left-0 flex flex-col gap-3 ${activeItem === index ? "opacity-100" : "opacity-0"} transition-all duration-800`}
+                >
+                  <div className="flex flex-col gap-7 mb-6">
+                    <h3
+                      className={`text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300`}
+                    >
+                      {item.title}
+                    </h3>
+                    <p className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre-line">
+                      {item.content}
+                    </p>
+                  </div>
+                  <p className="text-main-22 font-extrabold text-[#555555] leading-line-152 whitespace-pre-line mb-[3.25rem]">
+                    {item.description}
+                  </p>
+                  <button className="w-fit py-2.5 px-6 border border-white rounded-md text-base font-bold text-white leading-line-172">
+                    더보기
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div
+          ref={cubeContainer}
+          className="absolute top-[50%] right-[10.75rem] -translate-y-1/2 w-[58.125rem] h-[59.188rem]"
+        >
           <h3
-            className={`text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300`}
+            ref={cubeTitle}
+            className="mt-11 text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent text-center"
           >
-            K on
+            K on Suite
           </h3>
-          <p className="text-main-34 font-bold leading-line-152 text-white">
-            ‘온(온)’은 순우리말로 ‘모든 것’을 의미합니다.
-            <br />
-            일상과 업무, 사람과 기술, 감정과 언어까지
-            <br />K on은 우리 삶의 모든 순간을 이해하고 연결합니다.
-          </p>
-        </div>
-      </div>
-
-      {/* left 메뉴 컨텐츠 */}
-      <div className="absolute top-[33%] left-[16.55rem] w-full h-full flex justify-between">
-        <div ref={contentMenu} className="min-w-[28.063rem] min-h-[31.875rem]">
-          {/* <AccordionMenu items={menuItems} /> */}
-          <ul className={`relative flex flex-col gap-24 w-full h-full`}>
-            {menuItems.map((item, index) => (
+          <ul className="flex flex-col items-center justify-end w-full h-full">
+            {imagePaths.map((path, index) => (
               <li
                 key={index}
-                className={`absolute top-0 left-0 flex flex-col gap-3 ${activeItem === index ? "opacity-100" : "opacity-0"} transition-all duration-800`}
+                className={`cube-object-${index + 1} absolute top-0 ${path.direction} ${path.size}`}
               >
-                <div className="flex flex-col gap-7 mb-6">
-                  <h3
-                    className={`text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300`}
-                  >
-                    {item.title}
-                  </h3>
-                  <p className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre-line">
-                    {item.content}
-                  </p>
-                </div>
-                <p className="text-main-22 font-extrabold text-[#555555] leading-line-152 whitespace-pre-line mb-[3.25rem]">
-                  {item.description}
-                </p>
-                <button className="w-fit py-2.5 px-6 border border-white rounded-md text-base font-bold text-white leading-line-172">
-                  더보기
-                </button>
+                <Image
+                  src={activeItem === index ? (path.activeSrc ?? "") : (path.src ?? "")}
+                  alt="cube-data"
+                  width={path.width}
+                  height={path.height}
+                  className="w-full h-full"
+                />
               </li>
             ))}
           </ul>
-        </div>
-      </div>
-
-      <div
-        ref={cubeContainer}
-        className="absolute top-16 right-[10.75rem] w-[58.125rem] h-[59.188rem]"
-      >
-        <h3
-          ref={cubeTitle}
-          className="mt-11 text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent text-center"
-        >
-          K on Suite
-        </h3>
-        <ul className="flex flex-col items-center justify-end w-full h-full">
-          {imagePaths.map((path, index) => (
-            <li
-              key={index}
-              className={`cube-object-${index + 1} absolute top-0 ${path.direction} ${path.size}`}
-            >
-              <Image
-                src={activeItem === index ? (path.activeSrc ?? "") : (path.src ?? "")}
-                alt="cube-data"
-                width={path.width}
-                height={path.height}
-                className="w-full h-full"
-              />
-            </li>
-          ))}
-        </ul>
-        <p
-          ref={cubeDescription}
-          className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre text-center -mt-64"
-        >
-          Cloud, Model, RAG, Agent, Studio, RAI까지
-          <br />
-          KT는 AI 기술과 실무를 하나로 연결하는 AI 경험을 제공합니다.
-        </p>
-      </div>
-      {/* <div className="absolute bottom-[4.75rem] left-1/2 -translate-x-1/2">
-        <div className="flex flex-col items-center justify-center gap-7 w-full h-full">
-          <h3 className="text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300">
-            K on Suite
-          </h3>
-          <p className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre text-center">
+          <p
+            ref={cubeDescription}
+            className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre text-center -mt-64"
+          >
             Cloud, Model, RAG, Agent, Studio, RAI까지
             <br />
             KT는 AI 기술과 실무를 하나로 연결하는 AI 경험을 제공합니다.
           </p>
         </div>
-      </div> */}
-    </div>
+        {/* <div className="absolute bottom-[4.75rem] left-1/2 -translate-x-1/2">
+          <div className="flex flex-col items-center justify-center gap-7 w-full h-full">
+            <h3 className="text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300">
+              K on Suite
+            </h3>
+            <p className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre text-center">
+              Cloud, Model, RAG, Agent, Studio, RAI까지
+              <br />
+              KT는 AI 기술과 실무를 하나로 연결하는 AI 경험을 제공합니다.
+            </p>
+          </div>
+        </div> */}
+      </div>
+    </section>
   );
 });
 ParallaxDepthSection.displayName = "ParallaxDepthSection";
