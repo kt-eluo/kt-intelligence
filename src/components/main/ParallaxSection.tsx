@@ -87,7 +87,7 @@ const ParallaxSection: React.FC = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: el,
-        start: "top top",
+        start: "top 20%",
         end: "bottom top",
         // pin: true,
         // pinSpacing: true,

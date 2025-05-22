@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useMemo, forwardRef } from "react";
+import React, { useRef, useEffect, useState, useMemo, forwardRef, useLayoutEffect } from "react";
 // import clsx from "clsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -114,35 +114,67 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
     },
   ];
 
+  // Scroll to top on mount (page refresh)
   useEffect(() => {
-    // 왼쪽 컨텐츠 애니메이션
-    const contentTl = gsap.timeline({
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    let tl: gsap.core.Timeline | null = null;
+
+    // Clear scroll memory to avoid weird pinning issues on reload
+    if (ScrollTrigger.clearScrollMemory) {
+      ScrollTrigger.clearScrollMemory();
+    }
+
+    tl = gsap.timeline({
       scrollTrigger: {
-        trigger: container.current,
-        start: "top center",
-        end: "bottom center",
+        trigger: typeof ref === "object" && ref && "current" in ref ? ref.current : undefined,
+        start: "top top",
+        end: "+=14000",
+        scrub: true,
+        pin: true,
+        pinSpacing: true,
+        // markers: true,
       },
     });
-    contentTl
-      .fromTo(
-        title.current,
-        {
-          opacity: 0,
-          y: 100,
+    // 왼쪽 컨텐츠 애니메이션
+    // const contentTl = gsap.timeline({
+    //   scrollTrigger: {
+    //     trigger: container.current,
+    //     start: "top center",
+    //     end: "bottom center",
+    //   },
+    // });
+
+    tl.fromTo(
+      title.current,
+      {
+        opacity: 0,
+        y: 100,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        scrollTrigger: {
+          trigger: container.current,
+          start: "top center",
+          end: "bottom center",
+          scrub: true,
         },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          onComplete: () => {
-            gsap.to(title.current, {
-              opacity: 0,
-              duration: 1,
-              delay: 1,
-            });
-          },
-        },
-      )
+        // onComplete: () => {
+        //   gsap.to(title.current, {
+        //     opacity: 0,
+        //     duration: 1,
+        //     delay: 1,
+        //   });
+        // },
+      },
+    )
       .fromTo(
         kOn.current,
         {
@@ -152,14 +184,39 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         {
           opacity: 1,
           y: 0,
-          duration: 0.5,
-          onComplete: () => {
-            gsap.to(kOn.current, {
-              opacity: 0,
-              duration: 1,
-              delay: 0.5,
-            });
+          scrollTrigger: {
+            trigger: container.current,
+            start: "+=1000",
+            end: "+=1000",
+            scrub: true,
+            onLeave: () => {
+              gsap.to(title.current, {
+                opacity: 0,
+                duration: 0.5,
+              });
+              gsap.to(kOn.current, {
+                opacity: 0,
+                duration: 0.5,
+              });
+            },
+            onEnterBack: () => {
+              gsap.to(title.current, {
+                opacity: 1,
+                duration: 0.5,
+              });
+              gsap.to(kOn.current, {
+                opacity: 1,
+                duration: 0.5,
+              });
+            },
           },
+          // onComplete: () => {
+          //   gsap.to(kOn.current, {
+          //     opacity: 0,
+          //     duration: 1,
+          //     delay: 0.5,
+          //   });
+          // },
         },
       )
       .fromTo(
@@ -170,25 +227,30 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         {
           opacity: 1,
           duration: 0.5,
+          scrollTrigger: {
+            trigger: container.current,
+            start: "+=2500",
+            end: "+=1000",
+            scrub: true,
+          },
         },
-        "+=1",
       )
-      .to(".cube-object-1", {
-        opacity: 1,
-        duration: 0.5,
-      });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: typeof ref === "object" && ref && "current" in ref ? ref.current : undefined,
-        start: "top top",
-        end: "+=13000",
-        scrub: true,
-        pin: true,
-        pinSpacing: true,
-        // markers: true,
-      },
-    });
+      .fromTo(
+        ".cube-object-1",
+        {
+          opacity: 0,
+        },
+        {
+          opacity: 1,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: container.current,
+            start: "+=2500",
+            end: "+=1000",
+            scrub: true,
+          },
+        },
+      );
 
     // 큐브 컨텐츠 애니메이션
     gsap.set(".cube-object-1", { opacity: 0 });
@@ -207,7 +269,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
       duration: 0.5,
       scrollTrigger: {
         trigger: container.current,
-        start: "+=1000",
+        start: "+=3000",
         end: "+=1500",
         scrub: true,
         onLeave: () => {
@@ -225,7 +287,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         duration: 0.5,
         scrollTrigger: {
           trigger: container.current,
-          start: "+=3000",
+          start: "+=4500",
           end: "+=1500",
           scrub: true,
           onLeave: () => {
@@ -243,7 +305,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         duration: 0.5,
         scrollTrigger: {
           trigger: container.current,
-          start: "+=4500",
+          start: "+=6000",
           end: "+=1500",
           scrub: true,
           onLeave: () => {
@@ -261,7 +323,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         duration: 0.5,
         scrollTrigger: {
           trigger: container.current,
-          start: "+=6000",
+          start: "+=7500",
           end: "+=1500",
           scrub: true,
           onLeave: () => {
@@ -279,7 +341,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         duration: 0.5,
         scrollTrigger: {
           trigger: container.current,
-          start: "+=7500",
+          start: "+=9000",
           end: "+=1500",
           scrub: true,
           onLeave: () => {
@@ -296,7 +358,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         duration: 0.5,
         scrollTrigger: {
           trigger: container.current,
-          start: "+=9000",
+          start: "+=10500",
           end: "+=1500",
           scrub: true,
           onLeave: () => {
@@ -322,7 +384,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         ease: "power2.inOut",
         scrollTrigger: {
           trigger: container.current,
-          start: "+=10500",
+          start: "+=12000",
           end: "+=1500",
           scrub: true,
           onEnterBack: () => {
@@ -347,7 +409,16 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
           },
         },
       });
-  }, [setActiveItem]);
+
+    // Refresh ScrollTrigger after setup
+    ScrollTrigger.refresh();
+
+    return () => {
+      // Clean up timeline and ScrollTriggers
+      if (tl) tl.kill();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [setActiveItem, ref]);
 
   return (
     <section className="w-full h-full bg-black">

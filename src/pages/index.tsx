@@ -15,8 +15,8 @@ const Home = () => {
     <>
       <Header />
       <main>
-        {/* <HeroSection />
-        <ParallaxSection /> */}
+        <HeroSection />
+        <ParallaxSection />
         <ParallaxDepthSection ref={parallaxRef} />
         {/* <QualityManagementSection />
         <KEcoSection />
