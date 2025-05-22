@@ -9,7 +9,8 @@ import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
+const ParallaxDepthSection = forwardRef<HTMLDivElement | null>(() => {
+  const ref = useRef<HTMLDivElement>(null);
   const container = useRef<HTMLDivElement>(null);
   const title = useRef<HTMLHeadingElement>(null);
   const kOn = useRef<HTMLDivElement>(null);
@@ -123,299 +124,192 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
 
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
-    let tl: gsap.core.Timeline | null = null;
 
-    // Clear scroll memory to avoid weird pinning issues on reload
-    if (ScrollTrigger.clearScrollMemory) {
-      ScrollTrigger.clearScrollMemory();
-    }
-
-    tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: typeof ref === "object" && ref && "current" in ref ? ref.current : undefined,
-        start: "top top",
-        end: "+=14000",
-        scrub: true,
-        pin: true,
-        pinSpacing: true,
-        // markers: true,
-      },
+    ScrollTrigger.create({
+      trigger: ref.current,
+      start: "top top",
+      end: "+=4000",
+      pin: true,
+      pinSpacing: true,
     });
-    // 왼쪽 컨텐츠 애니메이션
-    // const contentTl = gsap.timeline({
-    //   scrollTrigger: {
-    //     trigger: container.current,
-    //     start: "top center",
-    //     end: "bottom center",
-    //   },
-    // });
 
-    tl.fromTo(
-      title.current,
-      {
-        opacity: 0,
-        y: 100,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        scrollTrigger: {
-          trigger: container.current,
-          start: "top center",
-          end: "bottom center",
-          scrub: true,
-        },
-        // onComplete: () => {
-        //   gsap.to(title.current, {
-        //     opacity: 0,
-        //     duration: 1,
-        //     delay: 1,
-        //   });
-        // },
-      },
-    )
-      .fromTo(
-        kOn.current,
-        {
-          opacity: 0,
-          y: 100,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scrollTrigger: {
-            trigger: container.current,
-            start: "+=1000",
-            end: "+=1000",
-            scrub: true,
-            onLeave: () => {
-              gsap.to(title.current, {
-                opacity: 0,
-                duration: 0.5,
-              });
-              gsap.to(kOn.current, {
-                opacity: 0,
-                duration: 0.5,
-              });
-            },
-            onEnterBack: () => {
-              gsap.to(title.current, {
-                opacity: 1,
-                duration: 0.5,
-              });
-              gsap.to(kOn.current, {
-                opacity: 1,
-                duration: 0.5,
-              });
-            },
-          },
-          // onComplete: () => {
-          //   gsap.to(kOn.current, {
-          //     opacity: 0,
-          //     duration: 1,
-          //     delay: 0.5,
-          //   });
-          // },
-        },
-      )
-      .fromTo(
-        contentMenu.current,
-        {
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: container.current,
-            start: "+=2500",
-            end: "+=1000",
-            scrub: true,
-          },
-        },
-      )
-      .fromTo(
-        ".cube-object-1",
-        {
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: container.current,
-            start: "+=2500",
-            end: "+=1000",
-            scrub: true,
-          },
-        },
-      );
-
-    // 큐브 컨텐츠 애니메이션
-    gsap.set(".cube-object-1", { opacity: 0 });
-    gsap.set(".cube-object-2", { opacity: 0, yPercent: -300, xPercent: 50 });
-    gsap.set(".cube-object-3", { opacity: 0, yPercent: -300, xPercent: 22 });
-    gsap.set(".cube-object-4", { opacity: 0, yPercent: -300, xPercent: 50 });
-    gsap.set(".cube-object-5", { opacity: 0, yPercent: -300, xPercent: 78 });
-    gsap.set(".cube-object-6", { opacity: 0, yPercent: 300, xPercent: 50 });
-    gsap.set(".cube-object-7", { opacity: 0, yPercent: 300 });
-    gsap.set(cubeTitle.current, { opacity: 0 });
-    gsap.set(cubeDescription.current, { opacity: 0 });
-    tl.to(".cube-object-2", {
-      opacity: 1,
-      yPercent: 36,
-      xPercent: 50,
-      duration: 0.5,
+    const titleTl = gsap.timeline({
       scrollTrigger: {
         trigger: container.current,
-        start: "+=3000",
-        end: "+=1500",
-        scrub: true,
+        start: "top top",
+        end: "+=1000",
+        toggleActions: "play none none reset",
         onLeave: () => {
-          setActiveItem(1);
+          gsap.to(title.current, {
+            opacity: 0,
+            duration: 0.3,
+          });
+          gsap.to(kOn.current, {
+            opacity: 0,
+            duration: 0.3,
+          });
         },
         onEnterBack: () => {
-          setActiveItem(0);
+          gsap.to(title.current, {
+            opacity: 1,
+            duration: 0.3,
+          });
+          gsap.to(kOn.current, {
+            opacity: 1,
+            duration: 0.3,
+          });
         },
       },
-    })
-      .to(".cube-object-3", {
+    });
+    const menuTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container.current,
+        start: "+=1000",
+        // end: "+=1000",
+        toggleActions: "play none none reset",
+      },
+    });
+
+    gsap.set(title.current, { opacity: 0, y: 30 });
+    gsap.set(kOn.current, { opacity: 0, y: 30 });
+    gsap.set(contentMenu.current, { opacity: 0 });
+    gsap.set(".cube-object-1", { opacity: 0 });
+    titleTl
+      .to(title.current, {
         opacity: 1,
-        yPercent: 76.4,
-        xPercent: 22,
-        duration: 0.5,
-        scrollTrigger: {
-          trigger: container.current,
-          start: "+=4500",
-          end: "+=1500",
-          scrub: true,
-          onLeave: () => {
-            setActiveItem(2);
-          },
-          onEnterBack: () => {
-            setActiveItem(1);
-          },
-        },
+        y: 0,
+        duration: 0.3,
       })
-      .to(".cube-object-4", {
+      .to(kOn.current, {
         opacity: 1,
-        yPercent: 90,
+        y: 0,
+        duration: 0.3,
+      });
+
+    menuTl
+      .to(contentMenu.current, {
+        opacity: 1,
+        duration: 0.3,
+      })
+      .to(".cube-object-1", {
+        opacity: 1,
+        duration: 0.3,
+      });
+
+    const cubeTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container.current,
+        start: "+=2000",
+        // end: "+=600",
+        toggleActions: "play none none reverse",
+      },
+    });
+    const cubeTl2 = gsap.timeline({
+      scrollTrigger: {
+        trigger: container.current,
+        start: "+=2600",
+        // end: "+=600",
+        toggleActions: "play none none reverse",
+      },
+    });
+    // 큐브 컨텐츠 애니메이션
+    gsap.set(".cube-object-2", { yPercent: -150, xPercent: 50 });
+    gsap.set(".cube-object-3", { yPercent: -150, xPercent: 22 });
+    gsap.set(".cube-object-4", { yPercent: -150, xPercent: 50 });
+    gsap.set(".cube-object-5", { yPercent: -150, xPercent: 78 });
+    gsap.set(".cube-object-6", { yPercent: 200, xPercent: 50 });
+    gsap.set(".cube-object-7", { opacity: 0 });
+    gsap.set(cubeTitle.current, { opacity: 0 });
+    gsap.set(cubeDescription.current, { opacity: 0 });
+    cubeTl
+      .to(".cube-object-2", {
+        opacity: 1,
+        yPercent: 36,
         xPercent: 50,
-        duration: 0.5,
-        scrollTrigger: {
-          trigger: container.current,
-          start: "+=6000",
-          end: "+=1500",
-          scrub: true,
-          onLeave: () => {
-            setActiveItem(3);
-          },
-          onEnterBack: () => {
-            setActiveItem(2);
-          },
-        },
+        duration: 0.3,
+        ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
       })
-      .to(".cube-object-5", {
-        opacity: 1,
-        yPercent: 102.4,
-        xPercent: 78,
-        duration: 0.5,
-        scrollTrigger: {
-          trigger: container.current,
-          start: "+=7500",
-          end: "+=1500",
-          scrub: true,
-          onLeave: () => {
-            setActiveItem(4);
-          },
-          onEnterBack: () => {
-            setActiveItem(3);
-          },
+      .to(
+        ".cube-object-3",
+        {
+          opacity: 1,
+          yPercent: 76.4,
+          xPercent: 22,
+          duration: 0.3,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-      })
-      .to(".cube-object-6", {
-        opacity: 1,
-        yPercent: 69,
-        xPercent: 50,
-        duration: 0.5,
-        scrollTrigger: {
-          trigger: container.current,
-          start: "+=9000",
-          end: "+=1500",
-          scrub: true,
-          onLeave: () => {
-            setActiveItem(5);
-          },
-          onEnterBack: () => {
-            setActiveItem(4);
-          },
+        "-=0.2",
+      )
+      .to(
+        ".cube-object-4",
+        {
+          opacity: 1,
+          yPercent: 90,
+          xPercent: 50,
+          duration: 0.3,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-      })
-      .to(".cube-object-7", {
-        opacity: 1,
-        yPercent: 0,
-        duration: 0.5,
-        scrollTrigger: {
-          trigger: container.current,
-          start: "+=10500",
-          end: "+=1500",
-          scrub: true,
-          onLeave: () => {
-            setActiveItem(6);
-            gsap.to(contentMenu.current, {
-              opacity: 0,
-              duration: 0.5,
-            });
-          },
-          onEnterBack: () => {
-            setActiveItem(5);
-            gsap.to(contentMenu.current, {
-              opacity: 1,
-              duration: 0.5,
-            });
-          },
+        "-=0.2",
+      )
+      .to(
+        ".cube-object-5",
+        {
+          opacity: 1,
+          yPercent: 102.4,
+          xPercent: 78,
+          duration: 0.3,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
-      })
+        "-=0.2",
+      )
+      .to(
+        ".cube-object-6",
+        {
+          opacity: 1,
+          yPercent: 69,
+          xPercent: 50,
+          duration: 0.3,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+        },
+        "-=0.2",
+      );
+
+    cubeTl2
       .to(cubeContainer.current, {
         xPercent: 50,
         right: "50%",
-        duration: 1,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: container.current,
-          start: "+=12000",
-          end: "+=1500",
-          scrub: true,
-          onEnterBack: () => {
-            gsap.to(cubeTitle.current, {
-              opacity: 0,
-              duration: 1,
-            });
-            gsap.to(cubeDescription.current, {
-              opacity: 0,
-              duration: 1,
-            });
-          },
-          onLeave: () => {
-            gsap.to(cubeTitle.current, {
-              opacity: 1,
-              duration: 1,
-            });
-            gsap.to(cubeDescription.current, {
-              opacity: 1,
-              duration: 1,
-            });
-          },
+        duration: 0.5,
+        ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+      })
+      .to(
+        contentMenu.current,
+        {
+          opacity: 0,
+          duration: 0.5,
+          ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         },
+        "<",
+      )
+      .to(".cube-object-7", {
+        opacity: 1,
+        duration: 0.5,
+        ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+      })
+      .to(cubeTitle.current, {
+        opacity: 1,
+        duration: 0.5,
+        ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+      })
+      .to(cubeDescription.current, {
+        opacity: 1,
+        duration: 0.5,
+        ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
       });
 
     // Refresh ScrollTrigger after setup
     ScrollTrigger.refresh();
 
     return () => {
-      // Clean up timeline and ScrollTriggers
-      if (tl) tl.kill();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [setActiveItem, ref]);
@@ -427,15 +321,21 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         className={`relative max-w-[1920px] mx-auto w-full h-screen flex flex-col gap-[7.625rem] overflow-hidden bg-black py-24 px-60 z-[2]`}
       >
         <div ref={container} className="w-full h-full flex flex-col items-center gap-[30%]">
-          <div ref={title} className="flex flex-col items-center gap-6">
+          <div
+            ref={title}
+            className="flex flex-col items-center gap-6 ease-[cubic-bezier(.215,.61,.355,1)]"
+          >
             <h2 className="text-main-72 font-bold leading-line-14 tracking-triple text-white">
-              구성요소
+              K intelligence 구성요소
             </h2>
             <p className="text-main-40 font-semibold leading-line-152 tracking-triple text-[#E0E0E0]">
               신뢰도 높은 검증 데이터에 기반한 한국형 AI
             </p>
           </div>
-          <div ref={kOn} className="flex flex-col items-center gap-7 text-center">
+          <div
+            ref={kOn}
+            className="flex flex-col items-center gap-7 text-center ease-[cubic-bezier(.215,.61,.355,1)]"
+          >
             <h3
               className={`text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300`}
             >
@@ -482,7 +382,7 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
         </div>
         <div
           ref={cubeContainer}
-          className="absolute top-[50%] right-[10.75rem] -translate-y-1/2 w-[58.125rem] h-[59.188rem]"
+          className="absolute top-[50%] right-[10.75rem] -translate-y-1/2 w-[58.125rem] h-[59.188rem] overflow-hidden"
         >
           <h3
             ref={cubeTitle}
@@ -494,10 +394,10 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
             {imagePaths.map((path, index) => (
               <li
                 key={index}
-                className={`cube-object-${index + 1} absolute top-0 ${path.direction} ${path.size}`}
+                className={`cube-object cube-object-${index + 1} absolute top-0 ${path.direction} ${path.size} ease-[cubic-bezier(.215,.61,.355,1)]`}
               >
                 <Image
-                  src={activeItem === index ? (path.activeSrc ?? "") : (path.src ?? "")}
+                  src={path.src}
                   alt="cube-data"
                   width={path.width}
                   height={path.height}
@@ -515,18 +415,6 @@ const ParallaxDepthSection = forwardRef<HTMLDivElement | null>((props, ref) => {
             KT는 AI 기술과 실무를 하나로 연결하는 AI 경험을 제공합니다.
           </p>
         </div>
-        {/* <div className="absolute bottom-[4.75rem] left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center justify-center gap-7 w-full h-full">
-            <h3 className="text-main-68 font-bold leading-line-14 tracking-triple bg-gradient-to-r from-[#FC4C41] from-[5.99%] to-[#8A0F0E] to-[178.99%] bg-clip-text text-transparent transition-all duration-300">
-              K on Suite
-            </h3>
-            <p className="text-main-40 font-bold text-white leading-[1.44] whitespace-pre text-center">
-              Cloud, Model, RAG, Agent, Studio, RAI까지
-              <br />
-              KT는 AI 기술과 실무를 하나로 연결하는 AI 경험을 제공합니다.
-            </p>
-          </div>
-        </div> */}
       </div>
     </section>
   );
